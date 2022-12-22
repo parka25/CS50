@@ -1,14 +1,19 @@
+import csv
 import sys
+from tabulate import tabulate
 
 
 def main():
     check_for_line_arguement()
+    table = []
     try:
-        file = open(sys.argv[1], "r")
-        lines = file.readlines()
-        print(lines)
-    except:
+        with open(sys.argv[1], "r") as csvfile:
+            read = csv.reader(csvfile)
+            for r in read:
+                table.append(r)
+    except FileNotFoundError:
         sys.exit("File cannot be found")
+    print(tabulate(table, tablefmt="grid"))
 
 
 def check_for_line_arguement():
@@ -20,8 +25,8 @@ def check_for_line_arguement():
         print("too many arguements")
         sys.exit()
 # check if the file written is a .py file
-    if sys.argv[1].endswith(".py") == False:
-        print("Not a python file")
+    if sys.argv[1].endswith(".csv") == False:
+        print("Not a csv file")
         sys.exit()
 
 
